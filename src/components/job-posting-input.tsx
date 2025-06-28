@@ -37,7 +37,7 @@ export function JobPostingInput({ value, onChange }: JobPostingInputProps) {
 					Job Posting
 				</label>
 				<InputTextarea
-					value={value.jobPosting}
+					value={value.jobPosting || ''}
 					onChange={handleJobPostingChange}
 					placeholder="Paste the job posting here... Include the job description, requirements, and any specific details about the role."
 					rows={6}
@@ -51,7 +51,7 @@ export function JobPostingInput({ value, onChange }: JobPostingInputProps) {
 					Tone
 				</label>
 				<Dropdown
-					value={value.tone}
+					value={value.tone || 'professional'}
 					options={toneOptions}
 					onChange={(e) => handleToneChange(e.value)}
 					placeholder="Select tone"

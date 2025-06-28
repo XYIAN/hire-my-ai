@@ -1,7 +1,7 @@
 'use client'
 
 import { InputTextarea } from 'primereact/inputtextarea'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { storageUtils } from '@/utils/storage'
 
 interface ResumeInputProps {
@@ -11,21 +11,25 @@ interface ResumeInputProps {
 
 export function ResumeInput({ value, onChange }: ResumeInputProps) {
 	const [isLoading, setIsLoading] = useState(true)
+	const [isInitialized, setIsInitialized] = useState(false)
 
 	useEffect(() => {
-		// Load saved resume on component mount
-		const savedResume = storageUtils.getResume()
-		if (savedResume) {
-			onChange(savedResume)
+		// Load saved resume on component mount only once
+		if (!isInitialized) {
+			const savedResume = storageUtils.getResume()
+			if (savedResume && savedResume !== value) {
+				onChange(savedResume)
+			}
+			setIsInitialized(true)
+			setIsLoading(false)
 		}
-		setIsLoading(false)
-	}, [onChange])
+	}, [isInitialized, onChange, value])
 
-	const handleResumeChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+	const handleResumeChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
 		const newValue = e.target.value
 		onChange(newValue)
 		storageUtils.saveResume(newValue)
-	}
+	}, [onChange])
 
 	if (isLoading) {
 		return (

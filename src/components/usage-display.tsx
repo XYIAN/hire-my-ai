@@ -21,21 +21,21 @@ export function UsageDisplay() {
 	}, [])
 
 	return (
-		<div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6">
+		<div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6">
 			<div className="flex items-center justify-between">
 				<div>
-					<h3 className="text-sm font-medium text-orange-800">
+					<h3 className="text-sm font-medium text-gray-800">
 						Daily Usage
 					</h3>
-					<p className="text-xs text-orange-600">
+					<p className="text-xs text-gray-600">
 						{remaining} generations remaining today
 					</p>
 				</div>
 				<div className="text-right">
-					<div className="text-lg font-bold text-orange-800">
+					<div className="text-lg font-bold text-gray-800">
 						{remaining}/10
 					</div>
-					<div className="text-xs text-orange-600">
+					<div className="text-xs text-gray-600">
 						Resets daily
 					</div>
 				</div>

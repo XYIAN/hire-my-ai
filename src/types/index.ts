@@ -7,10 +7,13 @@ export interface JobPostingData {
 	tone: 'professional' | 'casual' | 'witty'
 }
 
+export type GenerationType = 'cover-letter' | 'email-response' | 'outreach'
+
 export interface GenerationRequest {
 	resume: string
 	jobPosting: string
 	tone: 'professional' | 'casual' | 'witty'
+	type: GenerationType
 }
 
 export interface GenerationResponse {

@@ -11,13 +11,13 @@ export function HeroSection() {
 	}
 
 	return (
-		<section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-900 via-orange-800 to-orange-700 text-white">
+		<section className="min-h-screen flex items-center justify-center  text-white">
 			<div className="container mx-auto px-4 text-center">
 				<div className="max-w-4xl mx-auto">
 					<h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
 						HireMyAI
 					</h1>
-					<p className="text-xl md:text-2xl mb-8 text-orange-100 leading-relaxed">
+					<p className="text-xl md:text-2xl mb-8 leading-relaxed">
 						Generate tailored cover letters, recruiter responses, and follow-up messages 
 						powered by AI. Stand out from the crowd with personalized content that matches 
 						your resume and the job requirements.
@@ -27,10 +27,10 @@ export function HeroSection() {
 							label="Get Started"
 							icon="pi pi-rocket"
 							size="large"
-							className="p-button-lg bg-orange-500 hover:bg-orange-600 border-orange-500"
+							className="p-button-lg"
 							onClick={handleGetStarted}
 						/>
-						<p className="text-sm text-orange-200">
+						<p className="text-sm opacity-80">
 							Free • 10 generations per day • No registration required
 						</p>
 					</div>

@@ -1,15 +1,15 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
-import { Button } from 'primereact/button'
+import { SplitButton } from 'primereact/splitbutton'
 import { Card } from 'primereact/card'
 import { Message } from 'primereact/message'
 import { ResumeInput } from '@/components/resume-input'
 import { JobPostingInput } from '@/components/job-posting-input'
 import { UsageDisplay } from '@/components/usage-display'
 import { storageUtils } from '@/utils/storage'
-import { FormData } from '@/types'
+import { FormData, GenerationType } from '@/types'
 import { useWizardToast } from '@/hooks/use-wizard-toast'
 
 export default function BuilderPage() {
@@ -23,8 +23,19 @@ export default function BuilderPage() {
 	const [isLoading, setIsLoading] = useState(false)
 	const [error, setError] = useState('')
 
-	const handleSubmit = async (e: React.FormEvent) => {
-		e.preventDefault()
+	const handleResumeChange = useCallback((resume: string) => {
+		setFormData(prev => ({ ...prev, resume }))
+	}, [])
+
+	const handleJobPostingChange = useCallback((jobData: { jobPosting: string; tone: 'professional' | 'casual' | 'witty' }) => {
+		setFormData(prev => ({
+			...prev,
+			jobPosting: jobData.jobPosting,
+			tone: jobData.tone,
+		}))
+	}, [])
+
+	const generateContent = async (type: GenerationType) => {
 		setError('')
 
 		if (!formData.resume.trim() || !formData.jobPosting.trim()) {
@@ -55,7 +66,10 @@ export default function BuilderPage() {
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify(formData),
+				body: JSON.stringify({
+					...formData,
+					type,
+				}),
 			})
 
 			if (!response.ok) {
@@ -63,7 +77,14 @@ export default function BuilderPage() {
 			}
 
 			const result = await response.json()
-			success('Your cover letter has been conjured!')
+			
+			const successMessages = {
+				'cover-letter': 'Your cover letter has been conjured!',
+				'email-response': 'Your email response is ready!',
+				'outreach': 'Your outreach message has been crafted!',
+			}
+			
+			success(successMessages[type])
 			// Navigate to result page with the generated content
 			router.push(`/result?content=${encodeURIComponent(result.content)}`)
 		} catch (err) {
@@ -75,22 +96,40 @@ export default function BuilderPage() {
 		}
 	}
 
+	const splitButtonItems = [
+		{
+			label: 'Cover Letter',
+			icon: 'pi pi-file',
+			command: () => generateContent('cover-letter'),
+		},
+		{
+			label: 'Email Response',
+			icon: 'pi pi-envelope',
+			command: () => generateContent('email-response'),
+		},
+		{
+			label: 'Outreach',
+			icon: 'pi pi-users',
+			command: () => generateContent('outreach'),
+		},
+	]
+
 	return (
 		<div className="min-h-screen bg-gray-50 py-8">
 			<div className="container mx-auto px-4 max-w-4xl">
 				<div className="mb-8">
 					<h1 className="text-3xl font-bold text-gray-900 mb-2">
-						Generate Your Cover Letter
+						Generate Your Content
 					</h1>
 					<p className="text-gray-600">
-						Paste your resume and the job posting to create a tailored cover letter.
+						Paste your resume and the job posting to create tailored content.
 					</p>
 				</div>
 
 				<UsageDisplay />
 
 				<Card className="shadow-lg">
-					<form onSubmit={handleSubmit} className="space-y-6">
+					<form onSubmit={(e) => e.preventDefault()} className="space-y-6">
 						{error && (
 							<Message
 								severity="error"
@@ -101,7 +140,7 @@ export default function BuilderPage() {
 
 						<ResumeInput
 							value={formData.resume}
-							onChange={(resume) => setFormData({ ...formData, resume })}
+							onChange={handleResumeChange}
 						/>
 
 						<JobPostingInput
@@ -109,23 +148,17 @@ export default function BuilderPage() {
 								jobPosting: formData.jobPosting,
 								tone: formData.tone,
 							}}
-							onChange={(jobData) =>
-								setFormData({
-									...formData,
-									jobPosting: jobData.jobPosting,
-									tone: jobData.tone,
-								})
-							}
+							onChange={handleJobPostingChange}
 						/>
 
 						<div className="flex justify-end">
-							<Button
-								type="submit"
+							<SplitButton
 								label="Generate Cover Letter"
 								icon="pi pi-magic"
+								model={splitButtonItems}
 								loading={isLoading}
 								disabled={isLoading || !storageUtils.canGenerate()}
-								className="bg-orange-500 hover:bg-orange-600 border-orange-500"
+								onClick={() => generateContent('cover-letter')}
 							/>
 						</div>
 					</form>

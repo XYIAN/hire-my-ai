@@ -80,10 +80,10 @@ function ResultContent() {
 		<div className="min-h-screen bg-gray-50 py-8">
 			<div className="container mx-auto px-4 max-w-4xl">
 				<div className="mb-8">
-					<h1 className="text-3xl font-bold text-gray-900 mb-2">
+					<h1 className="text-3xl font-bold  mb-2">
 						Your Generated Cover Letter
 					</h1>
-					<p className="text-gray-600">
+					<p className="">
 						Review your AI-generated cover letter below.
 					</p>
 				</div>
@@ -94,13 +94,11 @@ function ResultContent() {
 						icon="pi pi-download"
 						loading={isExporting}
 						onClick={handleExportPDF}
-						className="bg-orange-500 hover:bg-orange-600 border-orange-500"
 					/>
 					<Button
 						label="Copy to Clipboard"
 						icon="pi pi-copy"
 						onClick={handleCopyToClipboard}
-						className="bg-blue-500 hover:bg-blue-600 border-blue-500"
 					/>
 					<Button
 						label="Start Over"
@@ -114,11 +112,7 @@ function ResultContent() {
 					<div
 						id="cover-letter-content"
 						className="prose prose-lg max-w-none"
-						style={{
-							fontFamily: 'Georgia, serif',
-							lineHeight: '1.6',
-							color: '#333',
-						}}
+						
 					>
 						<div
 							dangerouslySetInnerHTML={{
@@ -145,7 +139,7 @@ export default function ResultPage() {
 		<Suspense fallback={
 			<div className="min-h-screen bg-gray-50 flex items-center justify-center">
 				<div className="text-center">
-					<p className="text-gray-600">Loading...</p>
+					<p className="">Loading...</p>
 				</div>
 			</div>
 		}>
