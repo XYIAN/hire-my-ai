@@ -1,4 +1,4 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
 	output: 'standalone',
@@ -6,6 +6,9 @@ const nextConfig: NextConfig = {
 	env: {
 		OPENAI_API_KEY: process.env.OPENAI_API_KEY,
 	},
-};
+	images: {
+		unoptimized: true,
+	},
+}
 
-export default nextConfig;
+export default nextConfig

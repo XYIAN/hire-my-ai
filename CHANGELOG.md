@@ -5,9 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2024-12-19
+
+### Fixed
+
+- Fixed Netlify deployment issues with Next.js 15+ App Router
+- Updated Netlify configuration to properly serve static files from standalone build
+- Corrected publish directory path for Netlify deployment
+- Added proper redirects for API routes and static pages
+
 ## [1.0.0] - 2024-12-19
 
 ### Added
+
 - **AI-Powered Content Generation**: Generate tailored cover letters, email responses, and outreach messages using OpenAI's GPT-3.5 API
 - **Multiple Content Types**: Support for cover letters, email responses, and cold outreach messages
 - **PrimeReact UI Components**: Beautiful, accessible UI using PrimeReact with Lara Dark Amber theme
@@ -23,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Netlify Deployment**: Optimized for Netlify deployment with proper configuration
 
 ### Features
+
 - **Cover Letter Generation**: Traditional cover letter format with proper salutation and closing
 - **Email Response Generation**: Professional email response format for replying to recruiters
 - **Outreach Generation**: Cold outreach format for getting your foot in the door
@@ -33,6 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Toast Notifications**: Wizard-themed success and error notifications with sound effects
 
 ### Technical
+
 - **Next.js 15+**: Latest Next.js with App Router
 - **TypeScript**: Full type safety and IntelliSense support
 - **TailwindCSS**: Utility-first CSS framework
@@ -43,12 +55,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **SEO Optimized**: Proper metadata and structure
 
 ### Deployment
+
 - **Netlify Ready**: Includes netlify.toml configuration
 - **Environment Variables**: Secure API key management
 - **Build Optimization**: Optimized for production deployment
 - **Static Generation**: Fast loading and SEO-friendly
 
 ### Documentation
+
 - **Comprehensive README**: Setup instructions, features, and deployment guide
 - **API Documentation**: Clear API endpoint documentation
 - **Type Definitions**: Complete TypeScript interfaces
@@ -59,9 +73,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Planned Features
+
 - User authentication and account management
 - Template library for different industries
 - Advanced customization options
 - Analytics and usage insights
 - Integration with job boards
-- Multi-language support 
+- Multi-language support
