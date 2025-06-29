@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { SplitButton } from 'primereact/splitbutton'
 import { Card } from 'primereact/card'
 import { Message } from 'primereact/message'
+import { ProgressSpinner } from 'primereact/progressspinner'
 import { ResumeInput } from '@/components/resume-input'
 import { JobPostingInput } from '@/components/job-posting-input'
 import { UsageDisplay } from '@/components/usage-display'
@@ -115,55 +116,69 @@ export default function BuilderPage() {
 	]
 
 	return (
-		<div className="min-h-screen bg-gray-50 py-8">
-			<div className="container mx-auto px-4 max-w-4xl">
-				<div className="mb-8">
-					<h1 className="text-3xl font-bold text-gray-900 mb-2">
-						Generate Your Content
-					</h1>
-					<p className="text-gray-600">
-						Paste your resume and the job posting to create tailored content.
-					</p>
-				</div>
-
-				<UsageDisplay />
-
-				<Card className="shadow-lg">
-					<form onSubmit={(e) => e.preventDefault()} className="space-y-6">
-						{error && (
-							<Message
-								severity="error"
-								text={error}
-								className="w-full"
-							/>
-						)}
-
-						<ResumeInput
-							value={formData.resume}
-							onChange={handleResumeChange}
-						/>
-
-						<JobPostingInput
-							value={{
-								jobPosting: formData.jobPosting,
-								tone: formData.tone,
-							}}
-							onChange={handleJobPostingChange}
-						/>
-
-						<div className="flex justify-end">
-							<SplitButton
-								label="Generate Cover Letter"
-								icon="pi pi-magic"
-								model={splitButtonItems}
-								loading={isLoading}
-								disabled={isLoading || !storageUtils.canGenerate()}
-								onClick={() => generateContent('cover-letter')}
-							/>
+		<>
+			{isLoading && (
+				<div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+					<div className="bg-white rounded-lg p-8 flex flex-col items-center space-y-4">
+						<ProgressSpinner style={{ width: '50px', height: '50px' }} />
+						<div className="text-center">
+							<h3 className="text-lg font-semibold mb-2">🧙‍♂️ The Wizard is Working...</h3>
+							<p className="text-sm">Crafting your magical content...</p>
 						</div>
-					</form>
-				</Card>
+					</div>
+				</div>
+			)}
+			
+			<div className="min-h-screen bg-gray-50 py-8">
+				<div className="container mx-auto px-4 max-w-4xl">
+					<div className="mb-8">
+						<h1 className="text-3xl font-bold mb-2">
+							Generate Your Content
+						</h1>
+						<p>
+							Paste your resume and the job posting to create tailored content.
+						</p>
+					</div>
+
+					<UsageDisplay />
+
+					<Card className="shadow-lg">
+						<form onSubmit={(e) => e.preventDefault()} className="space-y-6">
+							{error && (
+								<Message
+									severity="error"
+									text={error}
+									className="w-full"
+								/>
+							)}
+
+							<ResumeInput
+								value={formData.resume}
+								onChange={handleResumeChange}
+							/>
+
+							<JobPostingInput
+								value={{
+									jobPosting: formData.jobPosting,
+									tone: formData.tone,
+								}}
+								onChange={handleJobPostingChange}
+							/>
+
+							<div className="flex justify-end">
+								<SplitButton
+									label="Generate Cover Letter"
+									icon="pi pi-magic"
+									model={splitButtonItems}
+									loading={isLoading}
+									disabled={isLoading || !storageUtils.canGenerate()}
+									onClick={() => generateContent('cover-letter')}
+								/>
+							</div>
+						</form>
+					</Card>
+				</div>
 			</div>
-		</div>
+		</>
 	)
 } 

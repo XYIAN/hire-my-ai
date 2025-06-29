@@ -1,17 +1,20 @@
-# HireMyAI
+# HireMyAI v1.0.0
 
-An AI-powered cover letter generator that helps job seekers create tailored cover letters, recruiter responses, and follow-up messages using OpenAI's GPT API.
+An AI-powered content generator that helps job seekers create tailored cover letters, recruiter responses, and follow-up messages using OpenAI's GPT API.
 
 ## Features
 
-- 🤖 **AI-Powered Generation**: Uses OpenAI's GPT-3.5 to generate personalized cover letters
+- 🤖 **AI-Powered Generation**: Uses OpenAI's GPT-3.5 to generate personalized content
 - 📝 **Resume Storage**: Automatically saves and loads your resume for convenience
-- 🎨 **Multiple Tones**: Choose from professional, casual, or witty tones
+- 🎨 **Multiple Content Types**: Generate cover letters, email responses, or outreach messages
+- 🎯 **Multiple Tones**: Choose from professional, casual, or witty tones
 - 📊 **Usage Tracking**: 10 free generations per day with automatic daily reset
 - 📱 **Mobile-First Design**: Fully responsive design that works on all devices
 - 🎨 **Beautiful UI**: Built with PrimeReact and TailwindCSS using the Lara Dark Amber theme
 - 📄 **PDF Export**: Export generated content as PDF
 - 📋 **Copy to Clipboard**: Easy copying of generated content
+- 🧙‍♂️ **Wizard-Themed Experience**: Magical notifications and loading animations
+- ⚡ **Loading Overlay**: Wizard-themed loading spinner during content generation
 
 ## Tech Stack
 
@@ -28,32 +31,36 @@ An AI-powered cover letter generator that helps job seekers create tailored cove
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - npm or yarn
 - OpenAI API key
 
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone <repository-url>
    cd hire-my-ai
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Set up environment variables**
    Create a `.env.local` file in the root directory:
+
    ```env
    OPENAI_API_KEY=your_openai_api_key_here
    ```
-   
+
    Get your OpenAI API key from: https://platform.openai.com/api-keys
 
 4. **Run the development server**
+
    ```bash
    npm run dev
    ```
@@ -66,7 +73,10 @@ An AI-powered cover letter generator that helps job seekers create tailored cove
 1. **Homepage**: Click "Get Started" to begin
 2. **Resume Input**: Paste your resume (automatically saved for next time)
 3. **Job Posting**: Paste the job description and select your preferred tone
-4. **Generate**: Click "Generate Cover Letter" to create your personalized content
+4. **Generate**: Use the SplitButton to choose your content type:
+   - **Cover Letter**: Traditional job application format
+   - **Email Response**: Reply to a recruiter's email
+   - **Outreach**: Cold email to introduce yourself
 5. **Review & Export**: Review the generated content and export as PDF or copy to clipboard
 
 ## Project Structure
@@ -82,7 +92,8 @@ src/
 │   ├── hero-section.tsx   # Homepage hero component
 │   ├── resume-input.tsx   # Resume input component
 │   ├── job-posting-input.tsx # Job posting input component
-│   └── usage-display.tsx  # Daily usage tracker
+│   ├── usage-display.tsx  # Daily usage tracker
+│   └── toast-provider.tsx # Toast context provider
 ├── lib/                   # Library configurations
 │   └── providers/         # React providers
 ├── types/                 # TypeScript type definitions
@@ -92,13 +103,13 @@ src/
 
 ## API Routes
 
-- `POST /api/generate` - Generates cover letter content using OpenAI
+- `POST /api/generate` - Generates content using OpenAI with support for multiple types
 
 ## Environment Variables
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `OPENAI_API_KEY` | Your OpenAI API key | Yes |
+| Variable         | Description         | Required |
+| ---------------- | ------------------- | -------- |
+| `OPENAI_API_KEY` | Your OpenAI API key | Yes      |
 
 ## Deployment
 
@@ -114,6 +125,7 @@ src/
 4. **Deploy**
 
 The project includes a `netlify.toml` file that automatically configures:
+
 - Build command and publish directory
 - Node.js version
 - Redirects for SPA routing
@@ -128,6 +140,7 @@ The project includes a `netlify.toml` file that automatically configures:
 ### Manual Deployment
 
 1. **Build the project**
+
    ```bash
    npm run build
    ```
@@ -146,6 +159,10 @@ The project includes a `netlify.toml` file that automatically configures:
 ### Local Development
 
 The app is configured to work seamlessly in both local development and production environments. The API routes will work locally with your `.env.local` file and on Netlify with environment variables set in the dashboard.
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for a complete list of changes and features.
 
 ## Contributing
 
