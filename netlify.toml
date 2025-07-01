@@ -1,13 +1,13 @@
 [build]
-  command = "npm run build"
-  publish = ".next/standalone/.next/server/app"
+  command = "npm run build && cp -r .next/static .next/standalone/.next/ && cp -r public .next/standalone/"
+  publish = ".next/standalone"
 
 [build.environment]
   NODE_VERSION = "18"
 
 [[redirects]]
   from = "/api/*"
-  to = "/.netlify/functions/:splat"
+  to = "/.netlify/functions/api/:splat"
   status = 200
 
 [[redirects]]
