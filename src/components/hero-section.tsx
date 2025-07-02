@@ -49,7 +49,7 @@ export function HeroSection() {
 							<span className="text-lg">Follow me on GitHub</span>
 						</div>
 						<a
-							href="https://github.com/your-username"
+							href="https://github.com/xyian"
 							target="_blank"
 							rel="noopener noreferrer"
 							className="inline-flex items-center space-x-2 px-6 py-3 rounded-lg border border-white/20 hover:border-white/40 transition-all duration-300 hover:scale-105 text-white hover:text-amber-300"
