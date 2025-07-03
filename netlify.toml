@@ -1,9 +1,12 @@
 [build]
-  command = "npm run build && cp -r .next/static .next/standalone/.next/ && cp -r public .next/standalone/"
-  publish = ".next/standalone"
+  command = "npm run build"
+  publish = ".next"
 
 [build.environment]
   NODE_VERSION = "18"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
 
 [[redirects]]
   from = "/api/*"
