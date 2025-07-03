@@ -2,13 +2,14 @@
 
 import { useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
-import { SplitButton } from 'primereact/splitbutton'
 import { Card } from 'primereact/card'
 import { Message } from 'primereact/message'
-import { ProgressSpinner } from 'primereact/progressspinner'
 import { ResumeInput } from '@/components/resume-input'
 import { JobPostingInput } from '@/components/job-posting-input'
 import { UsageDisplay } from '@/components/usage-display'
+import { BuilderPageHeader } from '@/components/builder/page-header'
+import { LoadingOverlay } from '@/components/builder/loading-overlay'
+import { GenerateButton } from '@/components/builder/generate-button'
 import { storageUtils } from '@/utils/storage'
 import { FormData, GenerationType } from '@/types'
 import { useWizardToast } from '@/hooks/use-wizard-toast'
@@ -28,13 +29,19 @@ export default function BuilderPage() {
 		setFormData(prev => ({ ...prev, resume }))
 	}, [])
 
-	const handleJobPostingChange = useCallback((jobData: { jobPosting: string; tone: 'professional' | 'casual' | 'witty' }) => {
-		setFormData(prev => ({
-			...prev,
-			jobPosting: jobData.jobPosting,
-			tone: jobData.tone,
-		}))
-	}, [])
+	const handleJobPostingChange = useCallback(
+		(jobData: {
+			jobPosting: string
+			tone: 'professional' | 'casual' | 'witty'
+		}) => {
+			setFormData(prev => ({
+				...prev,
+				jobPosting: jobData.jobPosting,
+				tone: jobData.tone,
+			}))
+		},
+		[]
+	)
 
 	const generateContent = async (type: GenerationType) => {
 		setError('')
@@ -47,7 +54,9 @@ export default function BuilderPage() {
 
 		if (!storageUtils.canGenerate()) {
 			setError('Daily limit reached. Please try again tomorrow!')
-			toastError('You have reached your daily limit. Please try again tomorrow!')
+			toastError(
+				'You have reached your daily limit. Please try again tomorrow!'
+			)
 			return
 		}
 
@@ -57,7 +66,9 @@ export default function BuilderPage() {
 			const successUsage = storageUtils.incrementUsage()
 			if (!successUsage) {
 				setError('Daily limit reached. Please try again tomorrow!')
-				toastError('You have reached your daily limit. Please try again tomorrow!')
+				toastError(
+					'You have reached your daily limit. Please try again tomorrow!'
+				)
 				setIsLoading(false)
 				return
 			}
@@ -78,13 +89,13 @@ export default function BuilderPage() {
 			}
 
 			const result = await response.json()
-			
+
 			const successMessages = {
 				'cover-letter': 'Your cover letter has been conjured!',
 				'email-response': 'Your email response is ready!',
-				'outreach': 'Your outreach message has been crafted!',
+				outreach: 'Your outreach message has been crafted!',
 			}
-			
+
 			success(successMessages[type])
 			// Navigate to result page with the generated content
 			router.push(`/result?content=${encodeURIComponent(result.content)}`)
@@ -97,59 +108,23 @@ export default function BuilderPage() {
 		}
 	}
 
-	const splitButtonItems = [
-		{
-			label: 'Cover Letter',
-			icon: 'pi pi-file',
-			command: () => generateContent('cover-letter'),
-		},
-		{
-			label: 'Email Response',
-			icon: 'pi pi-envelope',
-			command: () => generateContent('email-response'),
-		},
-		{
-			label: 'Outreach',
-			icon: 'pi pi-users',
-			command: () => generateContent('outreach'),
-		},
-	]
-
 	return (
 		<>
-			{isLoading && (
-				<div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-					<div className="bg-white rounded-lg p-8 flex flex-col items-center space-y-4">
-						<ProgressSpinner style={{ width: '50px', height: '50px' }} />
-						<div className="text-center">
-							<h3 className="text-lg font-semibold mb-2">🧙‍♂️ The Wizard is Working...</h3>
-							<p className="text-sm">Crafting your magical content...</p>
-						</div>
-					</div>
-				</div>
-			)}
-			
+			<LoadingOverlay isLoading={isLoading} />
+
 			<div className="min-h-screen bg-gray-50 py-8">
 				<div className="container mx-auto px-4 max-w-4xl">
-					<div className="mb-8">
-						<h1 className="text-3xl font-bold mb-2">
-							Generate Your Content
-						</h1>
-						<p>
-							Paste your resume and the job posting to create tailored content.
-						</p>
-					</div>
+					<BuilderPageHeader
+						title="Generate Your Content"
+						description="Paste your resume and the job posting to create tailored content."
+					/>
 
 					<UsageDisplay />
 
 					<Card className="shadow-lg">
-						<form onSubmit={(e) => e.preventDefault()} className="space-y-6">
+						<form onSubmit={e => e.preventDefault()} className="space-y-6">
 							{error && (
-								<Message
-									severity="error"
-									text={error}
-									className="w-full"
-								/>
+								<Message severity="error" text={error} className="w-full" />
 							)}
 
 							<ResumeInput
@@ -165,20 +140,15 @@ export default function BuilderPage() {
 								onChange={handleJobPostingChange}
 							/>
 
-							<div className="flex justify-end">
-								<SplitButton
-									label="Generate Cover Letter"
-									icon="pi pi-magic"
-									model={splitButtonItems}
-									loading={isLoading}
-									disabled={isLoading || !storageUtils.canGenerate()}
-									onClick={() => generateContent('cover-letter')}
-								/>
-							</div>
+							<GenerateButton
+								isLoading={isLoading}
+								canGenerate={storageUtils.canGenerate()}
+								onGenerate={generateContent}
+							/>
 						</form>
 					</Card>
 				</div>
 			</div>
 		</>
 	)
-} 
+}

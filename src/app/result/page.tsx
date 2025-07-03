@@ -2,10 +2,12 @@
 
 import { useEffect, useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Button } from 'primereact/button'
-import { Card } from 'primereact/card'
-import { Message } from 'primereact/message'
 import { useWizardToast } from '@/hooks/use-wizard-toast'
+import { PageHeader } from '@/components/result/page-header'
+import { ActionButtons } from '@/components/result/action-buttons'
+import { ContentDisplay } from '@/components/result/content-display'
+import { InfoMessage } from '@/components/result/info-message'
+import { LoadingState } from '@/components/result/loading-state'
 
 function ResultContent() {
 	const router = useRouter()
@@ -30,7 +32,7 @@ function ResultContent() {
 		setIsExporting(true)
 		try {
 			const html2pdf = (await import('html2pdf.js')).default
-			
+
 			const element = document.getElementById('cover-letter-content')
 			if (element) {
 				const opt = {
@@ -38,9 +40,9 @@ function ResultContent() {
 					filename: 'cover-letter.pdf',
 					image: { type: 'jpeg', quality: 0.98 },
 					html2canvas: { scale: 2 },
-					jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+					jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
 				}
-				
+
 				await html2pdf().set(opt).from(element).save()
 				success('Your magical PDF is ready for download!')
 			}
@@ -67,68 +69,27 @@ function ResultContent() {
 	}
 
 	if (!content) {
-		return (
-			<div className="min-h-screen bg-gray-50 flex items-center justify-center">
-				<div className="text-center">
-					<p className="text-gray-600">Loading...</p>
-				</div>
-			</div>
-		)
+		return <LoadingState />
 	}
 
 	return (
 		<div className="min-h-screen bg-gray-50 py-8">
 			<div className="container mx-auto px-4 max-w-4xl">
-				<div className="mb-8">
-					<h1 className="text-3xl font-bold  mb-2">
-						Your Generated Cover Letter
-					</h1>
-					<p className="">
-						Review your AI-generated cover letter below.
-					</p>
-				</div>
+				<PageHeader
+					title="Your Generated Cover Letter"
+					description="Review your AI-generated cover letter below."
+				/>
 
-				<div className="mb-6 flex flex-wrap gap-3">
-					<Button
-						label="Export as PDF"
-						icon="pi pi-download"
-						loading={isExporting}
-						onClick={handleExportPDF}
-					/>
-					<Button
-						label="Copy to Clipboard"
-						icon="pi pi-copy"
-						onClick={handleCopyToClipboard}
-					/>
-					<Button
-						label="Start Over"
-						icon="pi pi-refresh"
-						onClick={handleStartOver}
-						severity="secondary"
-					/>
-				</div>
+				<ActionButtons
+					isExporting={isExporting}
+					onExportPDF={handleExportPDF}
+					onCopyToClipboard={handleCopyToClipboard}
+					onStartOver={handleStartOver}
+				/>
 
-				<Card className="shadow-lg">
-					<div
-						id="cover-letter-content"
-						className="prose prose-lg max-w-none"
-						
-					>
-						<div
-							dangerouslySetInnerHTML={{
-								__html: content.replace(/\n/g, '<br />'),
-							}}
-						/>
-					</div>
-				</Card>
+				<ContentDisplay content={content} />
 
-				<div className="mt-6">
-					<Message
-						severity="info"
-						text="You can edit this content before using it. Remember to personalize it further if needed."
-						className="w-full"
-					/>
-				</div>
+				<InfoMessage text="You can edit this content before using it. Remember to personalize it further if needed." />
 			</div>
 		</div>
 	)
@@ -136,14 +97,8 @@ function ResultContent() {
 
 export default function ResultPage() {
 	return (
-		<Suspense fallback={
-			<div className="min-h-screen bg-gray-50 flex items-center justify-center">
-				<div className="text-center">
-					<p className="">Loading...</p>
-				</div>
-			</div>
-		}>
+		<Suspense fallback={<LoadingState />}>
 			<ResultContent />
 		</Suspense>
 	)
-} 
+}
